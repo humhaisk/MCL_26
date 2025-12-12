@@ -1,0 +1,51 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+statics/
+static/
+.env
+.env.*
+
+# Virtual Environments
+venv/
+env/
+bidEnv/
+bidEnv2/
+*.venv/
+.venv/
+
+# Python
+*.py[cod]
+*$py.class
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django migrations (Optional: remove if you want to track migrations)
+# */migrations/*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# WSL / Windows
+$RECYCLE.BIN/
+*.bak
+*.swp
+*.tmp

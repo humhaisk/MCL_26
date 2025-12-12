@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleLink %}
+<title>MCL-Teamlist</title>
+<style>
+    .custom-box {
+        background-color: var(--secondary-bg);
+        border: 2px solid var(--border-color);
+        padding: 15px;
+        border-radius: 8px;
+    }
+    .header-title {
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+    .team-logo-circle {
+        width: 70px;
+        height: 70px;
+        border: 2px solid var(--border-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-color);
+        font-weight: bold;
+        font-size: 0.9em;
+    }
+    .form-select {
+        background-color: var(--secondary-bg);
+        color: var(--text-color);
+        border-color: var(--border-color);
+        padding-right: 2.5rem;
+    }
+    .form-select option {
+        background-color: var(--secondary-bg);
+        color: var(--text-color);
+    }
+    .list-unstyled li {
+        margin-bottom: 5px;
+    }
+    .divider {
+        border-left: 2px solid var(--border-color);
+        height: 100%;
+        margin: 0 20px;
+    }
+    .table-custom {
+        --bs-table-bg: var(--secondary-bg);
+        --bs-table-color: var(--text-color);
+    }
+    .table-responsive {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .points-logo-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        width: 100%;
+    }
+
+    @media (max-width: 991px) {
+
+        .row.align-items-center {
+            text-align: center;
+        }
+
+        #team-selector {
+            width: 100%;
+        }
+
+        .points-logo-wrapper {
+            justify-content: center;
+            gap: 20px;
+        }
+    }
+
+    @media (max-width: 767px) {
+
+        #team-selector {
+            width: 100%;
+        }
+
+        .points-logo-wrapper {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        #team-logo-display {
+            width: 55px;
+            height: 55px;
+        }
+
+        .divider {
+            display: none;
+        }
+
+        .main-content-row {
+            flex-direction: column;
+        }
+
+        .col-lg-6,
+        .col-lg-5 {
+            width: 100%;
+        }
+
+        .custom-box,
+        .table-responsive {
+            width: 100%;
+        }
+    }
+
+</style>
+
+{% endblock titleLink %}
+
+{% block main %}
+<main class="container-fluid">
+    <div class="row align-items-center mb-4 g-3">
+        <!-- TEAM NAME DROPDOWN -->
+        <div class="col-md-4 col-sm-12">
+            <select id="team-selector" class="form-select form-select-lg" aria-label="Select your team name">
+                {% for team in teams %}
+                    <option value="{{ team.id }}">{{ team.TeamName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- POINTS + LOGO INLINE BOX -->
+        <div class="col-md-8 col-sm-12">
+            <div class="points-logo-wrapper">
+
+                <div class="custom-box px-4 py-2 mb-0">
+                    <b>Current Balance :</b> &#129689;<span class="text-warning" id="points-remain-box">2500</span>
+                </div>
+
+                <img id="team-logo-display" class="team-logo-circle" src="" alt="">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row main-content-row mt-4">
+
+        <!-- PLAYER LIST -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <h5 class="header-title mb-3">Player List :</h5>
+            <div class="table-responsive">
+                <table id="player-list-table" class="table table-custom align-middle mb-0">
+                    <tbody>
+                        <tr><td colspan="4" class="text-center">Please select a team to view players.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="d-none d-lg-flex col-auto align-items-stretch">
+            <div class="divider"></div>
+        </div>
+
+        <!-- MANAGER LIST -->
+        <div class="col-lg-5 col-md-12 mb-4">
+            <h5 class="header-title mb-3">Manager List :</h5>
+            <div class="custom-box">
+                <ul id="manager-list" class="list-unstyled">
+                    <li>Please select a team to view managers.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+{% endblock main %}
+
+{% block scriptt %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const teamSelector = document.getElementById('team-selector');
+    const teamLogoImg = document.getElementById('team-logo-display');
+    // const teamResevedPlayer = document.getElementById('player-list-table');
+    
+    // IMPORTANT: Define the Django URL endpoint for AJAX
+    const AJAX_BASE_URL = '/api/get-team-data/';
+
+    // ----------------------------------------
+    // Function to handle the AJAX call and DOM updates
+    // ----------------------------------------
+    function updateTeamData(teamId) {
+        if (!teamId) return;
+
+        // 1. Show Loading State (Optional: Add spinner/loading class here)
+        teamLogoImg.src = ''; // Clear image
+        teamLogoImg.alt = 'Loading...';
+        // pointsBox.textContent = 'Pts Remain : Loading...'; 
+
+        // 2. Fetch Data (AJAX) using the selected ID
+        fetch(`${AJAX_BASE_URL}${teamId}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Received data:", data);
+
+                // 3. Update the Logo's src attribute
+                if (data.team_logo_url) {
+                    teamLogoImg.src = data.team_logo_url;
+                    teamLogoImg.alt = data.team_name || 'Team Logo';
+                } else {
+                    // Fallback if no URL is returned
+                    teamLogoImg.src = ''; 
+                    teamLogoImg.alt = 'Logo Not Available';
+                }
+
+                // 4. Update other dynamic sections
+                // pointsBox.textContent = `Pts Remain : $ ${data.remaining_points || 'N/A'}`;
+                // updatePlayerList(data.players, playerTableBody);
+                // updateManagerList(data.managers, managerList);
+            })
+            .catch(error => {
+                console.error('Error fetching team data:', error);
+                teamLogoImg.alt = 'Error fetching data.';
+                // Optional: Display error message on other elements
+            });
+    }
+
+    // ----------------------------------------
+    // 💥 NEW: Initial State Setup
+    // ----------------------------------------
+    // Get the initial selected value from the dropdown. 
+    // This value is set by the server-side template (Django/Jinja).
+    const initialSelectedValue = teamSelector.value;
+    
+    // Call the data update function immediately on load
+    updateTeamData(initialSelectedValue);
+
+    // ----------------------------------------
+    // Event Listener: Fires when the dropdown changes
+    // ----------------------------------------
+    teamSelector.addEventListener('change', function() {
+        const selectedValue = this.value;
+        updateTeamData(selectedValue);
+    });
+    });
+</script>
+{% endblock scriptt %}

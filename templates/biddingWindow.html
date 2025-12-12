@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titleLink%}
+    <title>MCL-Bidding Window</title>
+    <style>
+        .custom-card {
+            background-color: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+
+        .player-photo-box {
+            min-height: 250px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .bid-info-box {
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+<main class="container py-4">
+    <div class="row">
+        <div class="col-lg-4 col-md-5 mb-4">
+            <div class="custom-card player-photo-box mb-4">
+                Player Photo
+            </div>
+            <div class="custom-card text-center py-3" id ="live-bid">
+                Player ID : XXXXX
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-md-7">
+            <div class="custom-card mb-4">
+                <h5 class="header-title mb-3">COLLEGE IDENTITY</h5>
+                <p class="mb-1">Name : XXXXXXX XXXXXXX XXXX</p>
+                <p class="mb-1">Dept : XXXXX</p>
+                <p class="mb-4">Batch : XXXXXX</p>
+                <hr class="border border-secondary-subtle">
+                <h5 class="header-title mb-3 mt-4">PLAYER IDENTITY</h5>
+                <p class="mb-1">Role : XXXXXXXX </p>
+                <p class="mb-0">Wicket kipping : Yes / No</p>
+            </div>
+            <div class="custom-card bid-info-box py-3">
+                Current Bid : &nbsp;<span class="text-warning"> &#129689;XXXX</span> &nbsp; By:  &nbsp; <span class="text-danger">XXXX</span>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}
+
+{% block scripts %}
+<script>
+    var mySocket = new WebSocket("ws://" + window.location.host + "/ws/ac/");
+
+    mySocket.onmessage = function(event) {
+        let data = JSON.parse(event.data);
+
+        document.getElementById("live-bid").innerHTML = `
+            <div class="text-center">
+                <span class="d-block mb-2 text-warning">CURRENT BID: ₹${data.current_bid}</span>
+                <span class="d-block text-white">PLAYER: ${data.player_id}</span>
+                <span class="d-block text-danger mt-2">TEAM: ${data.team_name}</span>
+            </div>
+        `;
+    };
+
+</script>
+{% endblock scripts %}
