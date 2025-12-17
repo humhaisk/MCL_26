@@ -11,14 +11,15 @@ import os
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from core import routing
+from channels.auth import AuthMiddlewareStack
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bidBackend.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": URLRouter(
+    "websocket": AuthMiddlewareStack(URLRouter(
         routing.websocket_urlpatterns
-    ),  # You can add your websocket routes here
+    )),  # You can add your websocket routes here
 })
 
 # application = get_asgi_application()

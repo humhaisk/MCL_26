@@ -36,8 +36,8 @@
             <div class="custom-card player-photo-box mb-4">
                 Player Photo
             </div>
-            <div class="custom-card text-center py-3" id ="live-bid">
-                Player ID : XXXXX
+            <div class="custom-card text-center py-3">
+                <span class="d-block text-white" id ="player-id"> Player ID : XXX </span> 
             </div>
         </div>
 
@@ -53,28 +53,23 @@
                 <p class="mb-0">Wicket kipping : Yes / No</p>
             </div>
             <div class="custom-card bid-info-box py-3">
-                Current Bid : &nbsp;<span class="text-warning"> &#129689;XXXX</span> &nbsp; By:  &nbsp; <span class="text-danger">XXXX</span>
+                Current Bid : &nbsp;<span class="text-warning" id="current-bid"> &#129689;XXXX</span> &nbsp; By:  &nbsp; <span class="text-danger" id="team-name">XXXX</span>
             </div>
         </div>
     </div>
 </main>
 {% endblock main %}
 
-{% block scripts %}
+{% block scriptt %}
 <script>
-    var mySocket = new WebSocket("ws://" + window.location.host + "/ws/ac/");
+    const myBiDSocket = new WebSocket("ws://" + window.location.host + "/ws/ac/");
 
-    mySocket.onmessage = function(event) {
-        let data = JSON.parse(event.data);
+    myBiDSocket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
 
-        document.getElementById("live-bid").innerHTML = `
-            <div class="text-center">
-                <span class="d-block mb-2 text-warning">CURRENT BID: ₹${data.current_bid}</span>
-                <span class="d-block text-white">PLAYER: ${data.player_id}</span>
-                <span class="d-block text-danger mt-2">TEAM: ${data.team_name}</span>
-            </div>
-        `;
+        document.getElementById("player-id").innerHTML = `Player ID :${data.player_id}`;
+        document.getElementById("current-bid").innerHTML = `${data.current_bid}`;
+        document.getElementById("team-name").innerHTML = `${data.team_name}`;
     };
-
 </script>
-{% endblock scripts %}
+{% endblock scriptt %}

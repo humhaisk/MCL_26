@@ -2,5 +2,6 @@ django
 channels
 daphne
 redis
-
+channels_redis
 pillow
+whitenoise

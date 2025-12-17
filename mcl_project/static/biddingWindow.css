@@ -1,0 +1,23 @@
+/* Custom card style */
+.custom-card {
+    background-color: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+/* Specific styles for the layout boxes */
+.player-photo-box {
+    min-height: 250px; /* Adjust as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.bid-info-box {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 500;
+}

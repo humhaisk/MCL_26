@@ -3,26 +3,22 @@
 *.pot
 *.pyc
 __pycache__/
-db.sqlite3
 db.sqlite3-journal
-media/
 staticfiles/
 statics/
-static/
 .env
 .env.*
+Design/
 
 # Virtual Environments
-venv/
-env/
-bidEnv/
-bidEnv2/
+mclEnv/
 *.venv/
 .venv/
 
 # Python
 *.py[cod]
 *$py.class
+.dockerignore
 
 # IDE / Editor
 .vscode/
