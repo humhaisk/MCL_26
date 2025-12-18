@@ -8,18 +8,26 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
 """
 
 import os
+import django
+
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    "bidBackend.settings"
+)
+
+django.setup()   # 🔥 THIS IS CRITICAL
+
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
-from core import routing
 from channels.auth import AuthMiddlewareStack
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bidBackend.settings')
+import core.routing
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": AuthMiddlewareStack(URLRouter(
-        routing.websocket_urlpatterns
-    )),  # You can add your websocket routes here
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
+            core.routing.websocket_urlpatterns
+        )
+    ),
 })
 
-# application = get_asgi_application()

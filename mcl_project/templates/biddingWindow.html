@@ -33,7 +33,7 @@
 <main class="container py-4">
     <div class="row">
         <div class="col-lg-4 col-md-5 mb-4">
-            <div class="custom-card player-photo-box mb-4">
+            <div class="custom-card player-photo-box mb-4" id="player-photo-box">
                 Player Photo
             </div>
             <div class="custom-card text-center py-3">
@@ -44,13 +44,13 @@
         <div class="col-lg-8 col-md-7">
             <div class="custom-card mb-4">
                 <h5 class="header-title mb-3">COLLEGE IDENTITY</h5>
-                <p class="mb-1">Name : XXXXXXX XXXXXXX XXXX</p>
-                <p class="mb-1">Dept : XXXXX</p>
-                <p class="mb-4">Batch : XXXXXX</p>
+                <p class="mb-1" id="player-name">Name : XXXXXXX XXXXXXX XXXX</p>
+                <p class="mb-1" id="player-dept">Dept : XXXXX</p>
+                <p class="mb-4" id="player-batch">Batch : XXXXXX</p>
                 <hr class="border border-secondary-subtle">
                 <h5 class="header-title mb-3 mt-4">PLAYER IDENTITY</h5>
-                <p class="mb-1">Role : XXXXXXXX </p>
-                <p class="mb-0">Wicket kipping : Yes / No</p>
+                <p class="mb-1" id="player-role">Role : XXXXXXXX </p>
+                <p class="mb-0" id="wicket-keeping">Wicket kipping : Yes / No</p>
             </div>
             <div class="custom-card bid-info-box py-3">
                 Current Bid : &nbsp;<span class="text-warning" id="current-bid"> &#129689;XXXX</span> &nbsp; By:  &nbsp; <span class="text-danger" id="team-name">XXXX</span>
@@ -70,6 +70,13 @@
         document.getElementById("player-id").innerHTML = `Player ID :${data.player_id}`;
         document.getElementById("current-bid").innerHTML = `${data.current_bid}`;
         document.getElementById("team-name").innerHTML = `${data.team_name}`;
+        document.getElementById("player-photo-box").innerHTML = `<img src="${data.photo_url}" alt="Player Photo" class="img-fluid">`;
+
+        document.getElementById("wicket-keeping").innerHTML = `Wicket kipping : ${data.wicket_keeping}`;
+        document.getElementById("player-role").innerHTML = `Role : ${data.role}`;
+        document.getElementById("player-name").innerHTML = `Name : ${data.name}`;
+        document.getElementById("player-dept").innerHTML = `Dept : ${data.dept}`;
+        document.getElementById("player-batch").innerHTML = `Batch : ${data.batch}`;
     };
 </script>
 {% endblock scriptt %}

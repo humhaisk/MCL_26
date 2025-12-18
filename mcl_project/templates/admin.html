@@ -178,7 +178,7 @@
 {% endblock main %}
 
 {% block scriptt %}
-{% comment %} <script src="{% static 'js/admin.js' %}"></script> {% endcomment %}
+
 <script>
 // =========================
 //   REAL-TIME STATES
@@ -234,7 +234,7 @@ function loadTeamPanel() {
     const teams = ["KKR", "RR", "CSK", "GT", "RCB", "MI", "LSG", "SRH"];
     let buttons = teams.map(t => `
         <div class="col-6"><button class="btn btn-control btn-team" onclick="handleTeam('${t}')">${t}</button></div>
-    `).join("");
+    `).join(""); 
 
     rightBox.innerHTML = `
         <div class="control-card h-100 p-4">
@@ -258,8 +258,8 @@ function renderDisplay() {
 
     displayElement.innerHTML = `
         <div class="text-center">
-            <span class="d-block text-white">PLAYER: ${currentPlayer}</span>
-            <span class="d-block mb-2 text-warning">CURRENT BID: ₹${currentBid}</span>
+            <span class="d-block mb-2 text-white">PLAYER: ${currentPlayer}</span>
+            <span class="d-block text-warning">CURRENT BID: ₹${currentBid}</span>
             <span class="d-block text-danger mt-2">TEAM NAME: ${teamCode}</span>
         </div>
     `;
@@ -317,15 +317,23 @@ function handleAction(action) {
         currentBid = 0;
         biddingActive = false;
         teamCode = "N/A";
+    
     }
 
     if (action === "next") {
-        currentBid = 0;
-        teamCode = "N/A";
-        currentPlayer = "P-" + (Math.floor(Math.random() * 900 + 100));
-        biddingActive = true;
-    }
+        fetch("/api/random-player/")
+            .then(res => res.json())
+            .then(player => {
+                currentBid = 0;
+                teamCode = "N/A";
+                currentPlayer = player.player_id;
+                biddingActive = true;
 
+                console.log("Random Player:", player);
+        });
+
+    }
+   
     renderDisplay();
 }
 
@@ -333,8 +341,14 @@ function handleAction(action) {
 //   INITIAL LOAD
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
-    currentPlayer = "P-101";
-    biddingActive = true;
+    fetch("/api/random-player/")
+        .then(res => res.json())
+        .then(player => {
+            currentBid = 0;
+            teamCode = "N/A";
+            currentPlayer = player.player_id;
+            biddingActive = true;
+    });
     renderDisplay();
     loadIncrementPanel();
 });

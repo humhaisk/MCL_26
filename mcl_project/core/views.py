@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from core.models import TeamDetails
+from core.models import TeamDetails, BidTransactions, PlayerDetails
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -11,7 +11,13 @@ def index(request):
 
 @login_required
 def admin_site(request):
-    return render(request,'admin.html')
+    transactionsData = BidTransactions.objects.all()
+    teamData = TeamDetails.objects.all()
+    context = {
+        'teams' : teamData,
+        'transactions' : transactionsData,
+        }
+    return render(request,'admin.html', context)
 
 def user_login(request):
     if request.method == 'POST':
@@ -40,6 +46,10 @@ def teamList(request):
     context = {'teams' : all_team}
     return render(request,'teamlist.html',context)
 
+
+#################### API VIEWS ####################
+
+
 def getTeamData(request, id):
     team = TeamDetails.objects.get(id=id)
     data = {
@@ -47,3 +57,11 @@ def getTeamData(request, id):
         "team_logo_url": team.TeamLogo.url,
     }
     return JsonResponse(data)
+
+def get_random_player(request):
+    player = PlayerDetails.objects.order_by('?').first() # More Logic Requred
+    return JsonResponse({
+        "player_id": player.P_ID,
+        "name": player.Name,
+    })
+
