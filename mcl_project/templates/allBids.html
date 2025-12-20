@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block titleLink %}
+<title>MCL-BiddedPlayer</title>
+
+<style>
+/* ===== TABLE FIX ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.bids-table {
+    background: #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead th {
+    color: #00ff40;
+    border-bottom: 2px solid #00ff40;
+}
+
+tbody tr:hover {
+    background: #262626;
+}
+
+.coin-icon {
+    color: gold;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.status-sold { background: #2e7d32; }
+.status-unsold { background: #c62828; }
+.status-pending { background: #f9a825; color: #000; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .bids-table {
+        font-size: 0.85rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<main class="container">
+
+    <h4 class="text-success mb-4">Sold Player List</h4>
+
+    <table class="bids-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Player Name</th>
+                <th>Team</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for bid in soldbids %}
+            <tr>
+                <td>{{ bid.playername.P_ID }}</td>
+                <td>{{ bid.playername.Name }}</td>
+                <td>{{ bid.Team }}</td>
+                <td>
+                    <span class="text-warning">{{ bid.price }}</span>     
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4 class="text-success mt-4 mb-4">UnSold Player List</h4>
+    <table class="bids-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Player Name</th>
+                <th>Team</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for bid in unsoldbids %}
+            <tr>
+                <td>{{ bid.playername.P_ID }}</td>
+                <td>{{ bid.playername.Name }}</td>
+                <td>{{ bid.Team }}</td>
+                <td>
+                    <span class="text-warning">{{ bid.price }}</span>     
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+{% endblock %}

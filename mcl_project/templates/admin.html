@@ -185,8 +185,9 @@
 // =========================
 let currentBid = 0;
 let currentPlayer = "N/A";
-let teamCode = "N/A";
+let teamCode = "NIL";
 let biddingActive = false;
+let transitionState = 0; // 0: Pending... , 1: UnSold... , 2: Sold...
 
 // =========================
 //  WebSocket Setup
@@ -269,7 +270,7 @@ function renderDisplay() {
 //   HANDLERS
 // =========================
 function handleIncrement(amount) {
-    if (!biddingActive) return alert("Start bidding first!");
+    if (!biddingActive) return 0;
 
     currentBid += amount;
     renderDisplay();
@@ -277,7 +278,7 @@ function handleIncrement(amount) {
 }
 
 function handleUpdate(amount) {
-    if (!biddingActive) return alert("Start bidding first!");
+    if (!biddingActive) return 0;
 
     currentBid = amount;
     renderDisplay();
@@ -288,20 +289,17 @@ function handleUpdate(amount) {
 //   SEND DATA TO SERVER ON TEAM SELECTION
 // =======================================
 function handleTeam(team) {
-    if (!biddingActive) return alert("Start bidding first!");
+    if (!biddingActive) return 0;
 
     teamCode = team;
-    
-    console.log("Sending bid update to server...");
     
     if (mySocket.readyState === WebSocket.OPEN) {
         mySocket.send(JSON.stringify({
             'team_name' : teamCode,
             'current_bid' : currentBid,
-            'player_id' : currentPlayer
+            'player_id' : currentPlayer,
+            'transition_state': 0,
         }));
-    } else {
-        console.log("WebSocket not ready:", mySocket.readyState);
     }
     
     renderDisplay();
@@ -312,45 +310,108 @@ function handleTeam(team) {
 //   NEXT / SOLD LOGIC
 // =========================
 function handleAction(action) {
+    // ---------- SOLD ----------
     if (action === "sold") {
+        if (!biddingActive || teamCode === "NIL") {
+            alert("No team selected!");
+            return;
+        }
+
+        if (mySocket.readyState === WebSocket.OPEN) {
+            mySocket.send(JSON.stringify({
+                team_name: teamCode,
+                current_bid: currentBid,
+                player_id: currentPlayer,
+                transition_state: 2, // SOLD
+            }));
+        }
+
         alert(`Player ${currentPlayer} SOLD to ${teamCode} for ₹${currentBid}`);
-        currentBid = 0;
+
+        // RESET STATE
         biddingActive = false;
-        teamCode = "N/A";
-    
+        currentBid = 0;
+        teamCode = "NIL";
+        currentPlayer = "N/A";
+
+        renderDisplay();
+        return;
     }
 
+    // ---------- NEXT ----------
     if (action === "next") {
+
+        // 🔴 UNSOLD CASE
+        if (biddingActive) {
+
+            if (mySocket.readyState === WebSocket.OPEN) {
+                mySocket.send(JSON.stringify({
+                    team_name: "UNSOLD",
+                    current_bid: 0,
+                    player_id: currentPlayer,
+                    transition_state: 1, // UNSOLD
+                }));
+            }
+
+            alert(`Player ${currentPlayer} UNSOLD`);
+
+            // RESET STATE
+            biddingActive = false;
+            currentBid = 0;
+            teamCode = "NIL";
+            currentPlayer = "N/A";
+
+            renderDisplay();
+            return;
+        }
+
+        // 🟢 LOAD NEXT PLAYER
         fetch("/api/random-player/")
             .then(res => res.json())
             .then(player => {
-                currentBid = 0;
-                teamCode = "N/A";
                 currentPlayer = player.player_id;
+                currentBid = 0;
+                teamCode = "NIL";
                 biddingActive = true;
 
-                console.log("Random Player:", player);
-        });
+                if (mySocket.readyState === WebSocket.OPEN) {
+                    mySocket.send(JSON.stringify({
+                        team_name: teamCode,
+                        current_bid: currentBid,
+                        player_id: currentPlayer,
+                        transition_state: 0,
+                    }));
+                }
 
+                renderDisplay();
+            });
     }
-   
-    renderDisplay();
 }
+
 
 // =========================
 //   INITIAL LOAD
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("/api/random-player/")
+    loadIncrementPanel();
+
+    fetch("/api/pending-player/")
         .then(res => res.json())
         .then(player => {
-            currentBid = 0;
-            teamCode = "N/A";
-            currentPlayer = player.player_id;
-            biddingActive = true;
-    });
-    renderDisplay();
-    loadIncrementPanel();
+            if (player && player.player_id) {
+                currentPlayer = player.player_id;
+                currentBid = player.current_bid || 0;
+                teamCode = player.team_name || "NIL";
+                biddingActive = true;
+            } else {
+                biddingActive = false;
+            }
+            renderDisplay(); // 🔥 MUST be here
+        })
+        .catch(() => {
+            biddingActive = false;
+            renderDisplay();
+        });
 });
 
 </script>

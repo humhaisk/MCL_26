@@ -10,7 +10,7 @@ class PlayerDetails(models.Model):
 
     PlayerPhoto = models.ImageField(upload_to='playerPhoto/')
     PlayerRole  = models.CharField(max_length=25)
-    WicketKeeping = models.BooleanField()
+    WicketKeeping = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')])
 
     P_ID = models.CharField(max_length=10, primary_key=True, unique=True, editable=False)
 
@@ -65,10 +65,10 @@ class ManagerDetails(models.Model):     # ❌ previously used models.Manager (wr
 class BidTransactions(models.Model):
     playername = models.OneToOneField(PlayerDetails, on_delete=models.CASCADE)
     price = models.IntegerField()  # ❌ IntegerField does NOT support max_length
-    Team = models.ForeignKey(TeamDetails, on_delete=models.CASCADE)
+    Team = models.ForeignKey(TeamDetails, on_delete=models.CASCADE, null=True,)
 
     T_ID = models.CharField(max_length=10, unique=True, primary_key=True, editable=False)
-
+    T_status = models.IntegerField(default=0, choices=[(0, "Pending"), (1, "UnSold"), (2, "Sold")])
     def save(self, *args, **kwargs):
         if not self.T_ID:
             last_tran = BidTransactions.objects.order_by('-T_ID').first()
@@ -80,3 +80,6 @@ class BidTransactions(models.Model):
             self.T_ID = new_id
 
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.T_ID
