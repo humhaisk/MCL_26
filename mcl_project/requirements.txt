@@ -1,7 +1,8 @@
-django
-channels
+Django>=4.2
+gunicorn
 daphne
-redis
-channels_redis
-pillow
+channels
+channels-redis
 whitenoise
+psycopg2-binary
+python-dotenv

@@ -8,14 +8,37 @@
     <link rel="icon" href="{% static 'favicon.ico' %}">
     <style>
     :root {
-        --primary-bg: #1a1a1a;
-        --secondary-bg: #333333;
-        --accent-color: #00ff40;
-        --text-color: #ffffff;
-        --border-color: #00ff40;
-    }
+    /* ===== CORE THEME ===== */
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #333333;
+    --accent-color: #00ff40;
+    --text-color: #ffffff;
+    --border-color: #00ff40;
+
+    /* ===== NEUTRALS ===== */
+    --bg-dark-1: #1e1e1e;
+    --bg-dark-2: #262626;
+    --bg-input: #2c2c2c;
+    --border-muted: #444;
+
+    /* ===== STATUS COLORS ===== */
+    --success-bg: #2e7d32;
+    --danger-bg: #c62828;
+    --warning-bg: #f9a825;
+    --warning-text: #000000;
+
+    /* ===== EFFECTS ===== */
+    --shadow-accent: rgba(0, 255, 64, 0.4);
+    --focus-ring: rgba(0, 255, 64, 0.5);
+
+    /* ===== MISC ===== */
+    --gold-color: gold;
+    --danger-text: #ff6666;
+}
+
 
     body {
+        /* background-image: url("https://t3.ftcdn.net/jpg/06/59/60/16/240_F_659601641_dms0A1wuIBjQwsGFZpiLpzBQRpyG59nY.jpg"); */
         background-color: var(--primary-bg);
         color: var(--text-color);
         font-family: Arial, sans-serif;
@@ -60,7 +83,6 @@
         color: var(--accent-color);
         font-weight: bold;
     }
-
 
     @media (max-width: 768px) {
   
@@ -110,7 +132,8 @@
         height: 40px !important;
         margin-right: 10px !important;
     }
-    }
+
+}
     </style>
     {% block titleLink %}
     {% endblock titleLink %}
@@ -125,7 +148,7 @@
             <a class="nav-link" href="{% url 'home' %}">Bidding-Window</a>
             <a class="nav-link" href="{% url 'all-bids' %}">All-Bids</a>
             {% if request.user.is_authenticated %}
-                {% if request.user.is_superuser %}
+                {% if request.user.is_staff %}
                 <a class="nav-link" href="{% url 'admin-site'%}">ADMIN</a>
                 {% else %}
                 <a class="nav-link" href="{% url 'teamlist'%}">Team-List</a>

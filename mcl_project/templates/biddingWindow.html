@@ -1,204 +1,242 @@
-{% extends 'base.html' %}
-{% load static %}
-
+{% extends 'base.html' %} 
+{% load static %} 
 {% block titleLink%}
-    <title>MCL-Bidding Window</title>
-    <style>
-        .custom-card {
-            background-color: var(--secondary-bg);
-            border: 2px solid var(--border-color);
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
+<title>MCL-Bidding Window</title>
+<style>
+  .custom-card {
+    border: 2px solid var(--border-color);
+    background-color: var(--secondary-bg);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
 
-        .player-photo-box {
-            min-height: 250px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
+  .player-photo-box {
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
 
-        .bid-info-box {
-            text-align: center;
-            font-size: 1.1em;
-            font-weight: 500;
-        }
+  .bid-info-box {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 500;
+  }
 
-        .stamp-box {
-            position: absolute;
-            top: 40%;
-            left: 70%;
-            transform: translate(-50%, -50%) rotate(5deg);
-            z-index: 10;
-            {% comment %} display: none;              /* 🔒 hidden by default */ {% endcomment %}
-            pointer-events: none;
-        }
+  .stamp-box {
+    position: absolute;
+    top: 40%;
+    left: 70%;
+    transform: translate(-50%, -50%) rotate(5deg);
+    z-index: 10;
+    display: none; /* 🔒 hidden by default */
+    pointer-events: none;
+  }
 
-        .stamp-box img {
-            width: 220px;
-            opacity: 0.85;
-        }
+  .stamp-box img {
+    width: 220px;
+    opacity: 0.85;
+  }
 
-        .row {
-            position: relative;
-        }
+  .row {
+    position: relative;
+  }
 
-
-    </style>
+  @keyframes stampDrop {
+    0% {
+      transform: translate(-50%, -80%) scale(1.5) rotate(-15deg);
+      opacity: 0;
+    }
+    60% {
+      transform: translate(-50%, -50%) scale(1) rotate(5deg);
+      opacity: 1;
+    }
+    80% {
+      transform: translate(-50%, -50%) scale(1.05) rotate(3deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1) rotate(5deg);
+    }
+  }
+  .stamp-animate {
+    animation: stampDrop 0.6s ease-out forwards;
+  }
+</style>
 {% endblock %}
-
 {% block main %}
 <main class="container py-4">
-    <div class="row">
-        <div class="col-lg-4 col-md-5 mb-4">
-            <div class="custom-card player-photo-box mb-4" id="player-photo-box">
-                Player Photo
-            </div>
-            <div class="custom-card py-3 d-flex justify-content-between text-white" id ="player-info-box">
-                <span id="player-id">Player ID : XXX</span>
-                <span id="player-count">12 / 200</span>
-            </div>
-        </div>
-        <div class="stamp-box" id="sold-stamp">
-            <img src="{% static 'soldStamp.png' %}" alt="sold">
-        </div>
-
-        <div class="col-lg-8 col-md-7">
-            <div class="custom-card mb-4">
-                <h5 class="header-title mb-3">COLLEGE IDENTITY</h5>
-                <p class="mb-1" id="player-name">Name : XXXXXXX XXXXXXX XXXX</p>
-                <p class="mb-1" id="player-dept">Dept : XXXXX</p>
-                <p class="mb-4" id="player-batch">Batch : XXXXXX</p>
-                <hr class="border border-secondary-subtle">
-                <h5 class="header-title mb-3 mt-4">PLAYER IDENTITY</h5>
-                <p class="mb-1" id="player-role">Role : XXXXXXXX </p>
-                <p class="mb-0" id="wicket-keeping">Wicket kipping : Yes / No</p>
-            </div>
-            <div class="custom-card bid-info-box py-3">
-                Current Bid : &nbsp; &#129689;<span class="text-warning" id="current-bid">XXXX</span> &nbsp; By:  &nbsp; <span class="text-danger" id="team-name">XXXX</span>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-lg-4 col-md-5 mb-4">
+      <div class="custom-card player-photo-box mb-4" id="player-photo-box">
+        Player Photo
+      </div>
+      <div
+        class="custom-card py-3 d-flex justify-content-between text-white"
+        id="player-info-box"
+      >
+        <span id="player-id">Player ID : XXX</span>
+        <span id="player-count">12 / 200</span>
+      </div>
     </div>
-</main>
-{% endblock main %}
+    <div class="stamp-box" id="sold-stamp">
+      <img src="{% static 'soldStamp.png' %}" alt="sold" />
+    </div>
 
+    <div class="col-lg-8 col-md-7">
+      <div class="custom-card mb-4">
+        <h5 class="header-title mb-3">COLLEGE IDENTITY</h5>
+        <p class="mb-1" id="player-name">Name : XXXXXXX XXXXXXX XXXX</p>
+        <p class="mb-1" id="player-dept">Dept : XXXXX</p>
+        <p class="mb-4" id="player-batch">Batch : XXXXXX</p>
+        <hr class="border border-secondary-subtle" />
+        <h5 class="header-title mb-3 mt-4">PLAYER IDENTITY</h5>
+        <p class="mb-1" id="player-role">Role : XXXXXXXX</p>
+        <p class="mb-0" id="wicket-keeping">Wicket kipping : Yes / No</p>
+      </div>
+      <div class="custom-card bid-info-box py-3">
+        Current Bid : &nbsp; &#129689;<span
+          class="text-warning"
+          id="current-bid"
+          >XXXX</span
+        >
+        &nbsp; By: &nbsp; <span class="text-danger" id="team-name">XXXX</span>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock main %} 
 {% block scriptt %}
 <script>
-    const myBiDSocket = new WebSocket("ws://" + window.location.host + "/ws/ac/");
-    const soldStamp = document.getElementById("sold-stamp");
-    myBiDSocket.onmessage = function (event) {
-        const data = JSON.parse(event.data);
-        
-        document.getElementById("player-id").innerHTML = `Player ID :${data.player_id}`;
-        document.getElementById("current-bid").innerHTML = `${data.current_bid}`;
-        document.getElementById("team-name").innerHTML = `${data.team_name}`;
-        document.getElementById("player-photo-box").innerHTML =
-            `<img src="${data.photo_url}" alt="Player Photo" class="img-fluid">`;
-        
-        document.getElementById("wicket-keeping").innerHTML =
-            `Wicket keeping : ${data.wicket_keeping}`;
-        document.getElementById("player-role").innerHTML =
-            `Role : ${data.role}`;
-        document.getElementById("player-name").innerHTML =
-            `Name : ${data.name}`;
-        document.getElementById("player-dept").innerHTML =
-            `Dept : ${data.dept}`;
-        document.getElementById("player-batch").innerHTML =
-            `Batch : ${data.batch}`;
-        
-        /* 🔴 SOLD STAMP LOGIC */
-        let status = String(data.transaction_status).trim();
-        soldStamp.style.display = "none";
-        if (status === "2") {
-            soldStamp.style.display = "block";
-        }
+  const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+  const myBiDSocket = new WebSocket(
+    `${protocol}://${window.location.host}/ws/ac/`
+  );
 
-    
-        fetch(`/api/get-count/`)
-            .then(res => res.json())
-            .then(count => {
-                document.getElementById("player-count").innerHTML =
-                    `${count.totalBids} / ${count.totalPlayer}`;
-            });
-    };
+  const soldStamp = document.getElementById("sold-stamp");
+  myBiDSocket.onmessage = function (event) {
+    const data = JSON.parse(event.data);
 
+    document.getElementById(
+      "player-id"
+    ).innerHTML = `Player ID :${data.player_id}`;
+    document.getElementById("current-bid").innerHTML = `${data.current_bid}`;
+    document.getElementById("team-name").innerHTML = `${data.team_name}`;
+    document.getElementById(
+      "player-photo-box"
+    ).innerHTML = `<img src="${data.photo_url}" alt="Player Photo" class="img-fluid">`;
 
-    document.addEventListener("DOMContentLoaded", async () => {
-    try {
-        const [playerRes, countRes] = await Promise.all([
-            fetch("/api/last-transaction-player/"),
-            fetch("/api/get-count/")
-        ]);
+    document.getElementById(
+      "wicket-keeping"
+    ).innerHTML = `Wicket keeping : ${data.wicket_keeping}`;
+    document.getElementById("player-role").innerHTML = `Role : ${data.role}`;
+    document.getElementById("player-name").innerHTML = `Name : ${data.name}`;
+    document.getElementById("player-dept").innerHTML = `Dept : ${data.dept}`;
+    document.getElementById("player-batch").innerHTML = `Batch : ${data.batch}`;
 
-        if (!playerRes.ok || !countRes.ok) {
-            throw new Error("API response error");
-        }
-
-        const player = await playerRes.json();
-        const count = await countRes.json();
-
-        const totalBids = Number(count.totalBids || 0);
-        const totalPending = Number(count.totalPendingBids || 0);
-        const totalPlayers = Number(count.totalPlayer || 0);
-
-        const isAuctionEnded = (totalBids - totalPending) >= totalPlayers;
-
-        const fields = [
-            "player-info-box",
-            "current-bid",
-            "team-name",
-            "player-photo-box",
-            "wicket-keeping",
-            "player-role",
-            "player-name",
-            "player-dept",
-            "player-batch"
-        ];
-
-        if (isAuctionEnded) {
-            fields.forEach(id => {
-                document.getElementById(id).innerHTML = "Bidding End !!!";
-            });
-            return;
-        }
-
-        if (!player || !player.player_id) {
-            fields.forEach(id => {
-                document.getElementById(id).innerHTML = "Pending...";
-            });
-            return;
-        }
-
-        // ✅ Update UI safely
-        document.getElementById("player-id").innerHTML = `Player ID : ${player.player_id}`;
-        document.getElementById("current-bid").innerHTML = player.bid_price ?? 0;
-        document.getElementById("team-name").innerHTML = player.team_name ?? "NIL";
-        document.getElementById("player-photo-box").innerHTML =
-            `<img src="${player.photo_url}" class="img-fluid">`;
-        document.getElementById("wicket-keeping").innerHTML =
-            `Wicket keeping : ${player.wicket_keeping ?? "No"}`;
-        document.getElementById("player-role").innerHTML =
-            `Role : ${player.role ?? "N/A"}`;
-        document.getElementById("player-name").innerHTML =
-            `Name : ${player.name ?? "N/A"}`;
-        document.getElementById("player-dept").innerHTML =
-            `Dept : ${player.dept ?? "N/A"}`;
-        document.getElementById("player-batch").innerHTML =
-            `Batch : ${player.batch ?? "N/A"}`;
-        document.getElementById("player-count").innerHTML =
-            `${totalBids} / ${totalPlayers}`;
-
-        let status = String(data.transaction_status).trim();
-        soldStamp.style.display = "none";
-        if (status === "2") {
-            soldStamp.style.display = "block";
-        }
-
-    } catch (error) {
-        console.error("Auction UI error:", error);
+    /* 🔴 SOLD STAMP LOGIC */
+    let status = String(data.transaction_status).trim();
+    soldStamp.style.display = "none";
+    if (status === "2") {
+      soldStamp.style.display = "block";
+      soldStamp.classList.remove("stamp-animate");
+      void soldStamp.offsetWidth;
+      soldStamp.classList.add("stamp-animate");
     }
-    });
+
+    fetch(`/api/get-count/`)
+      .then((res) => res.json())
+      .then((count) => {
+        document.getElementById(
+          "player-count"
+        ).innerHTML = `${count.totalBids} / ${count.totalPlayer}`;
+      });
+  };
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const [playerRes, countRes] = await Promise.all([
+        fetch("/api/last-transaction-player/"),
+        fetch("/api/get-count/"),
+      ]);
+
+      if (!playerRes.ok || !countRes.ok) {
+        throw new Error("API response error");
+      }
+
+      const player = await playerRes.json();
+      const count = await countRes.json();
+
+      const totalBids = Number(count.totalBids || 0);
+      const totalPending = Number(count.totalPendingBids || 0);
+      const totalPlayers = Number(count.totalPlayer || 0);
+
+      const isAuctionEnded = totalBids - totalPending >= totalPlayers;
+
+      const fields = [
+        "player-info-box",
+        "current-bid",
+        "team-name",
+        "player-photo-box",
+        "wicket-keeping",
+        "player-role",
+        "player-name",
+        "player-dept",
+        "player-batch",
+      ];
+
+      if (isAuctionEnded) {
+        fields.forEach((id) => {
+          document.getElementById(id).innerHTML = "Bidding End !!!";
+        });
+        return;
+      }
+
+      if (!player || !player.player_id) {
+        fields.forEach((id) => {
+          document.getElementById(id).innerHTML = "Pending...";
+        });
+        return;
+      }
+
+      // ✅ Update UI safely
+      document.getElementById(
+        "player-id"
+      ).innerHTML = `Player ID : ${player.player_id}`;
+      document.getElementById("current-bid").innerHTML = player.bid_price ?? 0;
+      document.getElementById("team-name").innerHTML =
+        player.team_name ?? "NIL";
+      document.getElementById(
+        "player-photo-box"
+      ).innerHTML = `<img src="${player.photo_url}" class="img-fluid">`;
+      document.getElementById("wicket-keeping").innerHTML = `Wicket keeping : ${
+        player.wicket_keeping ?? "No"
+      }`;
+      document.getElementById("player-role").innerHTML = `Role : ${
+        player.role ?? "N/A"
+      }`;
+      document.getElementById("player-name").innerHTML = `Name : ${
+        player.name ?? "N/A"
+      }`;
+      document.getElementById("player-dept").innerHTML = `Dept : ${
+        player.dept ?? "N/A"
+      }`;
+      document.getElementById("player-batch").innerHTML = `Batch : ${
+        player.batch ?? "N/A"
+      }`;
+      document.getElementById(
+        "player-count"
+      ).innerHTML = `${totalBids} / ${totalPlayers}`;
+
+      soldStamp.style.display = "none";
+      if (player.bidState === 2) {
+        soldStamp.style.display = "block";
+      }
+      
+    } catch (error) {
+      console.error("Auction UI error:", error);
+    }
+  });
 </script>
 {% endblock scriptt %}

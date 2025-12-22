@@ -17,22 +17,22 @@ th, td {
 }
 
 .bids-table {
-    background: #1e1e1e;
+    background: var(--bg-dark-1);
     border-radius: 10px;
     overflow: hidden;
 }
 
 thead th {
-    color: #00ff40;
-    border-bottom: 2px solid #00ff40;
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--border-color);
 }
 
 tbody tr:hover {
-    background: #262626;
+    background: var(--bg-dark-2);
 }
 
 .coin-icon {
-    color: gold;
+    color: var(--gold-color);
 }
 
 .status-badge {
@@ -41,9 +41,21 @@ tbody tr:hover {
     font-size: 0.8rem;
 }
 
-.status-sold { background: #2e7d32; }
-.status-unsold { background: #c62828; }
-.status-pending { background: #f9a825; color: #000; }
+.status-sold { background: var(--success-bg); }
+.status-unsold { background: var(--danger-bg); }
+.status-pending { background: var(--warning-bg);
+    color: var(--warning-text); }
+
+    /* ===== COLUMN ALIGNMENT FIX ===== */
+
+/* Center Team (3rd column) & Price (4th column) */
+.bids-table th:nth-child(3),
+.bids-table td:nth-child(3),
+.bids-table th:nth-child(4),
+.bids-table td:nth-child(4) {
+    text-align: center;
+}
+
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {

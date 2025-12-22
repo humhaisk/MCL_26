@@ -4,8 +4,6 @@
 *.pyc
 __pycache__/
 db.sqlite3-journal
-staticfiles/
-statics/
 .env
 .env.*
 Design/
@@ -38,7 +36,6 @@ Thumbs.db
 
 # Docker
 *.pid
-docker-compose.override.yml
 
 # WSL / Windows
 $RECYCLE.BIN/

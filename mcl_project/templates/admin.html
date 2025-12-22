@@ -133,8 +133,6 @@
     }
 </style>
 
-{% comment %} <link rel="stylesheet" href="{% static 'css/admin.css' %}"> {% endcomment %}
-
 {% endblock titleLink %}
 
 {% block main %}
@@ -165,10 +163,13 @@
             <div class="col-lg-6 col-md-12" id="right-control-box">
                 <!-- Content populated by admin.js -->
             </div>
-                <!-- Logout Button (Stays at the bottom/full width on mobile) -->
-                <button class="btn btn-control btn-logout-admin px-4 mt-2" onclick="document.getElementById('logout-form').submit()">
-                        Log Out
-                </button>
+            {% if request.user.username == "MCL26" %}
+            <a class="btn btn-control btn-logout-admin px-4 mt-2" href="{% url 'admin-dasboard'%}"> Admin Area </a>
+            {% endif %}
+            <!-- Logout Button (Stays at the bottom/full width on mobile) -->
+            <button class="btn btn-control btn-logout-admin px-4 mt-2" onclick="document.getElementById('logout-form').submit()">
+                    Log Out
+            </button>
                     <!-- Django form placeholder -->
                 <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">{% csrf_token %}</form>
         </div>
@@ -193,7 +194,10 @@ let transitionState = 0; // 0: Pending... , 1: UnSold... , 2: Sold...
 //  WebSocket Setup
 // =========================
 
-var mySocket = new WebSocket("ws://" + window.location.host + "/ws/ac/");
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+var mySocket = new WebSocket(
+    protocol + "://" + window.location.host + "/ws/ac/"
+);
 
 // =========================
 //   SWITCH PANEL
@@ -215,6 +219,8 @@ function loadIncrementPanel() {
             <div class="row g-3 mb-4">
                 <div class="col-6"><button class="btn btn-control btn-time-control" onclick="handleIncrement(5)">+5</button></div>
                 <div class="col-6"><button class="btn btn-control btn-time-control" onclick="handleIncrement(10)">+10</button></div>
+                <div class="col-6"><button class="btn btn-control btn-time-control" onclick="handleIncrement(50)">+50</button></div>
+                <div class="col-6"><button class="btn btn-control btn-time-control" onclick="handleIncrement(100)">+100</button></div>
             </div>
             <div class="row g-3">
                 <div class="col-6"><button class="btn btn-increment btn-control" onclick="handleUpdate(50)">50</button></div>

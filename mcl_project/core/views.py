@@ -12,7 +12,7 @@ def index(request):
     return render(request,'biddingWindow.html')
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_staff)
 def admin_site(request):
     transactionsData = BidTransactions.objects.all()
     teamData = TeamDetails.objects.all()
@@ -29,7 +29,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            if user.is_superuser:
+            if user.is_staff:
                 return redirect('admin-site')  # Redirect to admin site for superusers
             else:
                 return redirect('teamlist')  # Redirect to a page after successful login
@@ -152,7 +152,8 @@ def get_last_transaction_player(request):
             "wicket_keeping" : "Yes" if player.WicketKeeping else "No",
             "role": player.PlayerRole,
             "dept": player.Dept,
-            "batch": player.Batch
+            "batch": player.Batch,
+            "bidState" : player_tran.T_status
         }
     else:
         data = {
