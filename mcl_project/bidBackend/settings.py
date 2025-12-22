@@ -27,10 +27,18 @@ SECRET_KEY = 'django-insecure-zd!u$96hh2o$hou)4r3xi&bf1kgzqj_!yost$()rkiqlqqd!$6
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    "mcl-26.onrender.com",
     "localhost",
     "127.0.0.1",
-    ".onrender.com"
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://mcl-26.onrender.com",
+]
+
+# settings.py
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 
 # Application definition
