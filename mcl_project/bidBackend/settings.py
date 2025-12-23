@@ -92,13 +92,20 @@ ASGI_APPLICATION = 'bidBackend.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+DATABASE_URL = 'postgresql://mcl26db_main:58bSc5UDMkxRLbcTnRuuU9YK5MLyi20L@dpg-d54p0cp5pdvs73bn3v80-a.virginia-postgres.render.com/mcl26db'
+
 DATABASES = {
     "default": dj_database_url.config(
         default=os.environ.get("DATABASE_URL"),
         conn_max_age=600
     )
 }
-
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default="sqlite:///db.sqlite3",   # 👈 fallback for local
+#         conn_max_age=600,
+#     )
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

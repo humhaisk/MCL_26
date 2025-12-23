@@ -17,6 +17,10 @@ urlpatterns = [
     path("api/pending-player/", views.get_pending_player),
     path("api/last-transaction-player/", views.get_last_transaction_player),
     path("api/get-count/", views.useful_counter),
+
+   
+    path("admin/load-data/", views.migrate_data),
+
 ] 
 if settings.DEBUG:
     # This line tells Django to serve files from MEDIA_ROOT at the MEDIA_URL path
