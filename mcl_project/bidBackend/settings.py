@@ -90,7 +90,6 @@ ASGI_APPLICATION = 'bidBackend.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASE_URL='postgresql://mcl26db_main:58bSc5UDMkxRLbcTnRuuU9YK5MLyi20L@dpg-d54p0cp5pdvs73bn3v80-a.oregon-postgres.render.com:5432/mcl26db'
 DATABASES = {
     "default": dj_database_url.config(
         conn_max_age=600,
