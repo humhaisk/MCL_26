@@ -25,12 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-zd!u$96hh2o$hou)4r3xi&bf1kgzqj_!yost$()rkiqlqqd!$6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
-    "mcl-26.onrender.com",
-    "localhost",
-    "127.0.0.1",
+    '*'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -92,19 +90,20 @@ ASGI_APPLICATION = 'bidBackend.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASE_URL = 'postgresql://mcl26db_main:58bSc5UDMkxRLbcTnRuuU9YK5MLyi20L@dpg-d54p0cp5pdvs73bn3v80-a.virginia-postgres.render.com/mcl26db'
+DATABASE_URL='postgresql://mcl26db_main:58bSc5UDMkxRLbcTnRuuU9YK5MLyi20L@dpg-d54p0cp5pdvs73bn3v80-a.oregon-postgres.render.com:5432/mcl26db'
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600
+    'default': dj_database_url.parse(
+        os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
     )
 }
 # DATABASES = {
-#     "default": dj_database_url.config(
-#         default="sqlite:///db.sqlite3",   # 👈 fallback for local
-#         conn_max_age=600,
-#     )
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
 # }
 
 # Password validation
@@ -155,17 +154,19 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CHANNEL_LAYERS = {
-  "default": {
-    "BACKEND": "channels.layers.InMemoryChannelLayer",
-  },
-}
+# CHANNEL_LAYERS = {
+#   "default": {
+#     "BACKEND": "channels.layers.InMemoryChannelLayer",
+#   },
+# }
 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get("REDIS_URL")],
+            "hosts": ["redis://127.0.0.1:6379"],
         },
     },
 }
+
+

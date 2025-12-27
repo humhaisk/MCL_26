@@ -169,12 +169,3 @@ def useful_counter(request):
         "totalPendingBids": BidTransactions.objects.filter(T_status=0).count(),
     }
     return JsonResponse(data)
-
-# core/views.py
-from django.http import HttpResponse
-from django.core.management import call_command
-from django.contrib.admin.views.decorators import staff_member_required
-
-def migrate_data(request):
-    call_command("loaddata", "data_utf8.json")
-    return HttpResponse("Data loaded successfully")

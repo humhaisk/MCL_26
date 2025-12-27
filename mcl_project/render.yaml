@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: mcl-backend
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: |
-      python manage.py migrate &&
-      python manage.py loaddata data_utf8.json &&
-      daphne -b 0.0.0.0 -p $PORT bidBackend.asgi:application

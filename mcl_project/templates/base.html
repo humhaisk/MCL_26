@@ -9,41 +9,45 @@
     <style>
     :root {
     /* ===== CORE THEME ===== */
-    --primary-bg: #1a1a1a;
-    --secondary-bg: #333333;
-    --accent-color: #00ff40;
-    --text-color: #ffffff;
-    --border-color: #00ff40;
+    --primary-bg: #ffffff;
+    --secondary-bg: #f5f7fa;
+    --accent-color: #2563eb;
+    --text-color: #111827;
+    --border-color: #d1d5db;
 
     /* ===== NEUTRALS ===== */
-    --bg-dark-1: #1e1e1e;
-    --bg-dark-2: #262626;
-    --bg-input: #2c2c2c;
-    --border-muted: #444;
+    --bg-dark-1: #f9fafb;
+    --bg-dark-2: #eef2f7;
+    --bg-input: #ffffff;
+    --border-muted: #e5e7eb;
 
     /* ===== STATUS COLORS ===== */
-    --success-bg: #2e7d32;
-    --danger-bg: #c62828;
-    --warning-bg: #f9a825;
-    --warning-text: #000000;
+    --success-bg: #22c55e;
+    --danger-bg: #ef4444;
+    --warning-bg: #facc15;
+    --warning-text: #111827;
 
     /* ===== EFFECTS ===== */
-    --shadow-accent: rgba(0, 255, 64, 0.4);
-    --focus-ring: rgba(0, 255, 64, 0.5);
+    --shadow-accent: rgba(37, 99, 235, 0.25);
+    --focus-ring: rgba(37, 99, 235, 0.4);
 
     /* ===== MISC ===== */
-    --gold-color: gold;
-    --danger-text: #ff6666;
+    --gold-color: #f59e0b;
+    --danger-text: #dc2626;
 }
 
 
     body {
-        /* background-image: url("https://t3.ftcdn.net/jpg/06/59/60/16/240_F_659601641_dms0A1wuIBjQwsGFZpiLpzBQRpyG59nY.jpg"); */
         background-color: var(--primary-bg);
         color: var(--text-color);
         font-family: Arial, sans-serif;
     }
-
+    
+    main {
+    min-height: 100vh;
+    width: 100%;
+    }
+    
     header {
         position: sticky !important;
         top: 0;
