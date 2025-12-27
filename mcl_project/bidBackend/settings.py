@@ -90,21 +90,13 @@ ASGI_APPLICATION = 'bidBackend.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASE_URL='postgresql://mcl26db_main:58bSc5UDMkxRLbcTnRuuU9YK5MLyi20L@dpg-d54p0cp5pdvs73bn3v80-a.oregon-postgres.render.com:5432/mcl26db'
-DATABASE_URL='postgresql://mcl26db_main:58bSc5UDMkxRLbcTnRuuU9YK5MLyi20L@dpg-d54p0cp5pdvs73bn3v80-a/mcl26db'
+DATABASE_URL='postgresql://mcl26db_main:58bSc5UDMkxRLbcTnRuuU9YK5MLyi20L@dpg-d54p0cp5pdvs73bn3v80-a.oregon-postgres.render.com:5432/mcl26db'
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL'),
+    "default": dj_database_url.config(
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=True,
     )
 }
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -164,7 +156,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ["redis://127.0.0.1:6379"],
+            "hosts": [os.environ.get("REDIS_URL")],
         },
     },
 }
