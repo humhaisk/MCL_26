@@ -8,7 +8,7 @@ class PlayerDetails(models.Model):
     Dept  = models.CharField(max_length=25)
     Batch = models.CharField(max_length=25)
 
-    PlayerPhoto = models.ImageField(upload_to='playerPhoto/')
+    PlayerPhoto = models.URLField(max_length=250)
     PlayerRole  = models.CharField(max_length=25)
     WicketKeeping = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')])
 

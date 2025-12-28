@@ -49,8 +49,15 @@ def user_logout(request):
 
 @login_required
 def teamList(request):
-    all_team = TeamDetails.objects.exclude(TeamName="NIL")
-    context = {'teams' : all_team}
+    Team = TeamDetails.objects.filter(TeamName = request.user.username).first()
+    Players = BidTransactions.objects.filter(Team=Team).exclude(T_status=0)
+    Managers = ManagerDetails.objects.filter(team=Team)
+    spent_price = BidTransactions.objects.filter(Team=Team, T_status=2).aggregate(total=models.Sum('price'))['total'] or 0
+    context = {'team' : Team,
+            'players' : Players,
+            'managers' : Managers,
+            'price_re' : 3000 - spent_price
+           }
     return render(request,'teamlist.html',context)
 
 def all_bids(request):
