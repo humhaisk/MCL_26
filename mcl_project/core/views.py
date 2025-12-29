@@ -49,7 +49,7 @@ def user_logout(request):
 
 @login_required
 def teamList(request):
-    Team = TeamDetails.objects.filter(TeamName = request.user.username).first()
+    Team = TeamDetails.objects.filter(HM_USER = request.user).first()
     Players = BidTransactions.objects.filter(Team=Team).exclude(T_status=0)
     Managers = ManagerDetails.objects.filter(team=Team)
     spent_price = BidTransactions.objects.filter(Team=Team, T_status=2).aggregate(total=models.Sum('price'))['total'] or 0

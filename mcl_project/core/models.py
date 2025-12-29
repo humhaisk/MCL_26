@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # ---------------------------------------------------
 # PLAYER DETAILS MODEL
@@ -34,7 +35,8 @@ class PlayerDetails(models.Model):
 # ---------------------------------------------------
 class TeamDetails(models.Model):
     TeamName = models.CharField(max_length=25)
-    
+    HM_USER = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)    
+
     TeamHeadManager = models.CharField(max_length=25)
     TeamPlayingManager = models.CharField(max_length=25, default='none')
     TeamMarquee = models.CharField(max_length=25, default='none')
