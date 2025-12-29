@@ -42,7 +42,7 @@ class MyConsumer(AsyncWebsocketConsumer):
                     "name": player.Name,
                     "dept": player.Dept,
                     "batch": player.Batch,
-                    "photo_url": player.PlayerPhoto if player.PlayerPhoto else "",
+                    "photo_url": player.PlayerPhoto.url if player.PlayerPhoto else "",
                     "role": player.PlayerRole,
                     "wicket_keeping": "Yes" if player.WicketKeeping else "No",
                     "current_bid": current_bid,

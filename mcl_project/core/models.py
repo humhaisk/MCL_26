@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 
 # ---------------------------------------------------
 # PLAYER DETAILS MODEL
@@ -9,7 +10,7 @@ class PlayerDetails(models.Model):
     Dept  = models.CharField(max_length=25)
     Batch = models.CharField(max_length=25)
 
-    PlayerPhoto = models.URLField(max_length=250)
+    PlayerPhoto = CloudinaryField('player_photo', blank=True, null=True)
     PlayerRole  = models.CharField(max_length=25)
     WicketKeeping = models.BooleanField(choices=[(True, 'Yes'), (False, 'No')])
 

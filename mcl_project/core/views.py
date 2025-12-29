@@ -155,7 +155,7 @@ def get_last_transaction_player(request):
             "name": player.Name,
             "bid_price" : player_tran.price,
             "team_name" : teamName,
-            "photo_url": player.PlayerPhoto,
+            "photo_url": player.PlayerPhoto.url,
             "wicket_keeping" : "Yes" if player.WicketKeeping else "No",
             "role": player.PlayerRole,
             "dept": player.Dept,
