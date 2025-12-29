@@ -4,7 +4,6 @@ from core.models import PlayerDetails, BidTransactions, TeamDetails
 from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
 
-
 class MyConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
@@ -16,7 +15,7 @@ class MyConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
 
         player_id = data.get("player_id")
-        team_code = data.get("team_name")   # CSK / MI
+        team_code = data.get("team_name") 
         current_bid = data.get("current_bid")
         transition_state = data.get("transition_state")
         transaction = await self.get_pending_transaction(player_id)

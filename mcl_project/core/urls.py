@@ -19,7 +19,6 @@ urlpatterns = [
     path("api/get-count/", views.useful_counter),
 ] 
 if settings.DEBUG:
-    # This line tells Django to serve files from MEDIA_ROOT at the MEDIA_URL path
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

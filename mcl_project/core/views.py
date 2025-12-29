@@ -3,7 +3,7 @@ from core.models import TeamDetails, BidTransactions, PlayerDetails, ManagerDeta
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import models
-from django.db.models import OuterRef, Exists
+from django.db.models import OuterRef, Exists, Q
 from django.contrib.auth import authenticate, login, logout
 import random
 
@@ -50,13 +50,15 @@ def user_logout(request):
 @login_required
 def teamList(request):
     Team = TeamDetails.objects.filter(HM_USER = request.user).first()
+    Remaining_Team = TeamDetails.objects.exclude( Q(HM_USER=request.user) & Q(TeamName="NIL"))
     Players = BidTransactions.objects.filter(Team=Team).exclude(T_status=0)
     Managers = ManagerDetails.objects.filter(team=Team)
     spent_price = BidTransactions.objects.filter(Team=Team, T_status=2).aggregate(total=models.Sum('price'))['total'] or 0
     context = {'team' : Team,
             'players' : Players,
             'managers' : Managers,
-            'price_re' : 3000 - spent_price
+            'price_re' : 3000 - spent_price,
+            'remTeams' : Remaining_Team,
            }
     return render(request,'teamlist.html',context)
 

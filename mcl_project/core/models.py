@@ -2,9 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 
-# ---------------------------------------------------
-# PLAYER DETAILS MODEL
-# ---------------------------------------------------
 class PlayerDetails(models.Model):
     Name  = models.CharField(max_length=25)
     Dept  = models.CharField(max_length=25)
@@ -31,9 +28,6 @@ class PlayerDetails(models.Model):
     def __str__(self):
         return self.P_ID
 
-# ---------------------------------------------------
-# TEAM DETAILS MODEL
-# ---------------------------------------------------
 class TeamDetails(models.Model):
     TeamName = models.CharField(max_length=25)
     HM_USER = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)    
@@ -42,32 +36,25 @@ class TeamDetails(models.Model):
     TeamPlayingManager = models.CharField(max_length=25, default='none')
     TeamMarquee = models.CharField(max_length=25, default='none')
     TeamRetainedPlayer = models.CharField(max_length=25, default='none')
-    
-    TeamLogo = models.ImageField(upload_to='teamLogo/')
+
+    TeamLogo = CloudinaryField('team_logo', blank=True, null=True)
 
     def __str__(self):
         return self.TeamName
 
-# ---------------------------------------------------
-# MANAGER DETAILS MODEL (FIXED)
-# ---------------------------------------------------
-class ManagerDetails(models.Model):     # ❌ previously used models.Manager (wrong)
+class ManagerDetails(models.Model):
     Name  = models.CharField(max_length=25)
     Dept  = models.CharField(max_length=25)
     Batch = models.CharField(max_length=25)
 
-    # Manager belongs to a team ✔
     team = models.ForeignKey(TeamDetails, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.Name  
 
-# ---------------------------------------------------
-# BID TRANSACTIONS MODEL
-# ---------------------------------------------------
 class BidTransactions(models.Model):
     playername = models.OneToOneField(PlayerDetails, on_delete=models.CASCADE)
-    price = models.IntegerField()  # ❌ IntegerField does NOT support max_length
+    price = models.IntegerField()
     Team = models.ForeignKey(TeamDetails, on_delete=models.CASCADE, null=True,)
 
     T_ID = models.CharField(max_length=10, unique=True, primary_key=True, editable=False)

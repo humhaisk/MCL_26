@@ -1,94 +1,100 @@
-{% extends "base.html" %} 
-{% load static %} 
+{% extends "base.html" %}
+{% load static %}
+
 {% block titleLink %}
 <title>MCL-Teamlist</title>
+
 <style>
+  /* ===== BASE BOX ===== */
   .custom-box {
     background-color: var(--secondary-bg);
     border: 2px solid var(--border-color);
     padding: 15px;
     border-radius: 8px;
+    text-align: center;
   }
+
   .header-title {
     color: var(--accent-color);
     font-weight: bold;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 8px;
   }
+
+  /* ===== TEAM LOGO ===== */
   .team-logo-circle {
     width: 70px;
     height: 70px;
     border: 2px solid var(--border-color);
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-color);
-    font-weight: bold;
-    font-size: 0.9em;
+    object-fit: cover;
+    background-color: var(--primary-bg);
   }
-  .form-select {
-    background-color: var(--secondary-bg);
-    color: var(--text-color);
-    border-color: var(--border-color);
-    padding-right: 2.5rem;
-  }
-  .form-select option {
-    background-color: var(--secondary-bg);
-    color: var(--text-color);
-  }
-  .list-unstyled li {
-    margin-bottom: 5px;
-  }
-  .divider {
-    border-left: 2px solid var(--border-color);
-    height: 100%;
-    margin: 0 20px;
-  }
+
+  /* ===== TABLE ===== */
   .table-custom {
     --bs-table-bg: var(--secondary-bg);
     --bs-table-color: var(--text-color);
   }
+
+  .table-custom th,
+  .table-custom td {
+    padding: 12px;
+    vertical-align: middle;
+  }
+
+  .table-custom thead th {
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 600;
+  }
+
   .table-responsive {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
   }
 
+  /* ===== HEADER ROW ===== */
+  .team-header {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  .team-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--accent-color);
+  }
+
+  /* ===== POINTS + LOGO ===== */
   .points-logo-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
-    width: 100%;
-  }
-  .btn-control {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    padding: 15px 10px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 8px;
-    transition: transform 0.1s, box-shadow 0.1s;
-  }
-  .btn-control:active {
-    transform: translateY(1px);
-    box-shadow: none;
   }
 
-  .custom-box,
-  .table-responsive {
+  /* ===== DIVIDER ===== */
+  .divider {
+    border-left: 2px solid var(--border-color);
+    height: 100%;
+  }
+
+  /* ===== BUTTON ===== */
+  .btn-control {
     width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
   }
 
   .btn-logout-admin {
     background-color: var(--primary-bg);
     color: var(--danger-text);
     border: 2px solid var(--danger-text);
-    font-size: 1.2rem;
-    padding: 15px 0;
-    margin-top: 20px;
   }
 
   .btn-logout-admin:hover {
@@ -96,99 +102,85 @@
     color: var(--primary-bg);
   }
 
-  @media (max-width: 991px) {
-    .row.align-items-center {
-      text-align: center;
-    }
-
-    #team-selector {
-      width: 100%;
-    }
-
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
     .points-logo-wrapper {
-      justify-content: center;
-      gap: 20px;
-    }
-  }
-
-  @media (max-width: 767px) {
-    #team-selector {
-      width: 100%;
+      flex-direction: column;
     }
 
-    .points-logo-wrapper {
-      display: flex !important;
-      flex-direction: row !important;
-      justify-content: space-between !important;
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    #team-logo-display {
-      width: 55px;
-      height: 55px;
+    .team-logo-circle {
+      width: 60px;
+      height: 60px;
     }
 
     .divider {
       display: none;
     }
-
-    .main-content-row {
-      flex-direction: column;
-    }
-    .btn-control {
-      width: 100%;
-    }
   }
 </style>
+{% endblock titleLink %}
 
-{% endblock titleLink %} 
 {% block main %}
-<main class="container-fluid">
-  <div class="row align-items-center mb-4 g-3">
-    <!-- TEAM NAME DROPDOWN -->
-    <div class="col-md-4 col-sm-12">
-        {{ team.TeamName }}
+<main class="container-fluid px-3 px-md-4 py-3">
+
+  <!-- HEADER -->
+  <div class="row team-header align-items-center mb-4">
+    <div class="col-md-4 text-center text-md-start">
+      <div class="team-name">{{ team.TeamName }}</div>
     </div>
 
-    <!-- POINTS + LOGO INLINE BOX -->
-    <div class="col-md-8 col-sm-12">
+    <div class="col-md-8">
       <div class="points-logo-wrapper">
-        <div class="custom-box px-4 py-2 mb-0">
-          <b>Current Balance :</b> &#129689;<span
-            class="text-warning"
-            >{{ price_re }}</span
-          >
+        <div class="custom-box">
+          <b>Current Balance :</b><br>
+          &#129689; <span class="text-warning">{{ price_re }}</span>
         </div>
-        <img id="team-logo-display" class="team-logo-circle" src="{{ team.TeamLogo.url }}" alt="LOGO" />
+        <img src="{{ team.TeamLogo.url }}" class="team-logo-circle" alt="Team Logo">
       </div>
     </div>
   </div>
 
-  <div class="row main-content-row mt-4">
-    <!-- PLAYER LIST -->
-    <div class="col-lg-6 col-md-12 mb-4">
-      <h5 class="header-title mb-3">Player List :</h5>
+  <!-- SUMMARY -->
+  <div class="mb-4">
+    <table class="table table-custom text-center">
+      <thead>
+        <tr>
+          <th>Total Players</th>
+          <th>Total Managers</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ players|length }}</td>
+          <td>{{ managers|length }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="row">
+
+    <!-- PLAYERS -->
+    <div class="col-lg-6 mb-4">
+      <h5 class="header-title mb-3">Player List</h5>
       <div class="table-responsive">
-        <table
-          class="table table-custom align-middle mb-0"
-          id="player-list-table"
-        >
+        <table class="table table-custom text-center">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Price</th>
+            </tr>
+          </thead>
           <tbody>
             {% for player in players %}
             <tr>
-              <td class="text-center">
-                {{ player.playername.P_ID }}
-              </td>
-              <td class="text-center">
-                {{ player.playername.Name }}
-              </td>
-              <td class="text-center">
-                {{ player.playername.PlayerRole }}
-              </td>
-              <td class="text-center">
-                {{ player.price }}
-              </td>
+              <td>{{ player.playername.P_ID }}</td>
+              <td>{{ player.playername.Name }}</td>
+              <td>{{ player.playername.PlayerRole }}</td>
+              <td>{{ player.price }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -196,35 +188,49 @@
       </div>
     </div>
 
-    <div class="d-none d-lg-flex col-auto align-items-stretch">
+    <!-- DIVIDER -->
+    <div class="col-lg-1 d-none d-lg-flex justify-content-center">
       <div class="divider"></div>
     </div>
 
-    <!-- MANAGER LIST -->
-    <div class="col-lg-5 col-md-12 mb-4">
-      <h5 class="header-title mb-3">Manager List :</h5>
-      <div class="custom-box">
-        <ul class="list-unstyled">
-          <li>Please select a team to view managers.</li>
-        </ul>
+    <!-- MANAGERS -->
+    <div class="col-lg-5 mb-4">
+      <h5 class="header-title mb-3">Manager List</h5>
+      <div class="table-responsive">
+        <table class="table table-custom text-center">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Dept</th>
+              <th>Batch</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for manager in managers %}
+            <tr>
+              <td>{{ manager.Name }}</td>
+              <td>{{ manager.Dept }}</td>
+              <td>{{ manager.Batch }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <button
-      class="btn btn-control btn-logout-admin px-4 mt-2"
-      onclick="document.getElementById('logout-form').submit()"
-    >
+  </div>
+
+  <!-- LOGOUT -->
+  <div class="text-center mt-4">
+    <button class="btn btn-control btn-logout-admin"
+      onclick="document.getElementById('logout-form').submit()">
       Log Out
     </button>
-    <!-- Django form placeholder -->
-    <form
-      id="logout-form"
-      method="post"
-      action="{% url 'logout' %}"
-      style="display: none"
-    >
-      {% csrf_token %}
-    </form>
   </div>
+
+  <form id="logout-form" method="post" action="{% url 'logout' %}" style="display:none;">
+    {% csrf_token %}
+  </form>
+
 </main>
-{% endblock main %} 
+{% endblock main %}

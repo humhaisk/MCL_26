@@ -12,6 +12,7 @@ Design/
 mclEnv/
 *.venv/
 .venv/
+staticfiles/
 
 # Python
 *.py[cod]
@@ -31,6 +32,7 @@ __pycache__/
 # */migrations/*
 
 # OS files
+db.sqlite3
 .DS_Store
 Thumbs.db
 

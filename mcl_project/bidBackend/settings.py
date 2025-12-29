@@ -2,33 +2,22 @@ from pathlib import Path
 import os
 import dj_database_url
 
-# import channels_redis
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zd!u$96hh2o$hou)4r3xi&bf1kgzqj_!yost$()rkiqlqqd!$6'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    '*'
+    'mcl-26.onrender.com'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://mcl-26.onrender.com",
 ]
 
-# settings.py
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'channels',
@@ -54,8 +43,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-
-# SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin'
 ROOT_URLCONF = 'bidBackend.urls'
 
 TEMPLATES = [
@@ -73,12 +60,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'bidBackend.wsgi.application'
 ASGI_APPLICATION = 'bidBackend.asgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     "default": dj_database_url.config(
@@ -86,9 +68,6 @@ DATABASES = {
         ssl_require=True,
     )
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -106,9 +85,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 LOGIN_URL = '/login/'
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -116,9 +92,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
@@ -129,10 +102,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
@@ -140,9 +109,6 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -154,5 +120,3 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
-
