@@ -70,6 +70,9 @@ def all_bids(request):
     }
     return render(request,'allBids.html',context)
 
+def yt_live(request):
+    return render(request,'ytView.html')
+
 #################### API VIEWS ####################
 
 def get_random_player(request):

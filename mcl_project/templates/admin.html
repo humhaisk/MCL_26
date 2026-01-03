@@ -164,7 +164,8 @@
                 <!-- Content populated by admin.js -->
             </div>
             {% if request.user.username == "MCL26" %}
-            <a class="btn btn-control btn-logout-admin px-4 mt-2" href="{% url 'admin-dasboard'%}"> Admin Area </a>
+            <a class="btn btn-control btn-logout-admin px-4 mt-2" href="{% url 'admin-dasboard'%}"> ADMIN AREA </a>
+            <a class="btn btn-control btn-logout-admin px-4 mt-2" href="{% url 'yt-live'%}" target="_blank"> LIVE AREA </a>
             {% endif %}
             <!-- Logout Button (Stays at the bottom/full width on mobile) -->
             <button class="btn btn-control btn-logout-admin px-4 mt-2" onclick="document.getElementById('logout-form').submit()">

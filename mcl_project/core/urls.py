@@ -11,6 +11,7 @@ urlpatterns = [
     path('all-bids/',view=views.all_bids,name='all-bids'),
     path('login/',view=views.user_login,name='login'),
     path('logout/',view=views.user_logout,name='logout'),
+    path('yt-live/',view=views.yt_live,name='yt-live'),
     ############ API URL ########################
     path("api/random-player/", views.get_random_player),
     path("api/pending-player/", views.get_pending_player),
