@@ -102,29 +102,26 @@
 <main class="container-fluid px-3 px-md-4 py-3">
 
   <!-- HEADER -->
-  <div class="row team-header align-items-center mb-4">
-    <div class="col-md-8">
-      <div class="points-logo-wrapper">
-        <div class="custom-box">
-          <b>Team Name</b> {{ team.TeamName }}
-        </div>
-        <div class="custom-box">
-          <b>Remaining Price</b>
-          <span class="text-warning">{{ price_re }}</span>
-        </div>
-        <div class="custom-box">
-          <b>Total Player</b>
-          <span class="text-success">{{ players.count }}</span>
-        </div>
-        <img src="{{ team.TeamLogo.url }}" class="team-logo-circle" alt="Team Logo">
+  <div class="row team-header justify-content-between mb-4">
+    <div class="justify-content-between d-flex">
+      <div class="custom-box d-inline">
+        <b>Team Name:</b> {{ team.TeamName }}
       </div>
+      <div class="custom-box d-inline">
+        <b>Total Player:</b> {{ players.count }}
+      </div>
+    </div>
+    <div class="justify-content-between d-flex">
+      <div class="custom-box d-inline">
+        <b>Remaining Price:</b> {{ price_re }}
+      </div>
+      <img src="{{ team.TeamLogo.url }}" class="team-logo-circle" alt="Team Logo">
     </div>
   </div>
 
   <!-- PLAYER LIST -->
-  <div class="row">
+  <div class="row mb-4">
       <h5 class="header-title mb-3">Player Details</h5>
-      <div class="table-responsive">
         <table class="table table-custom">
           <thead>
             <tr>
@@ -145,11 +142,10 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>
   </div>
   
   <!-- SUMMARY TABLE -->
-  <div class="mb-4">
+  <div class="row mb-4">
     <h5 class="header-title mb-3">Teams Current Price</h5>
     <table class="table table-custom">
       {% for team_row, price_row in team_chunks %}
