@@ -12,7 +12,6 @@ urlpatterns = [
     path('login/',view=views.user_login,name='login'),
     path('logout/',view=views.user_logout,name='logout'),
     ############ API URL ########################
-    path('api/get-team-data/<int:id>/', views.getTeamData, name='get_team_data'),
     path("api/random-player/", views.get_random_player),
     path("api/pending-player/", views.get_pending_player),
     path("api/last-transaction-player/", views.get_last_transaction_player),

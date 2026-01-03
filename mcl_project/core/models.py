@@ -42,23 +42,13 @@ class TeamDetails(models.Model):
     def __str__(self):
         return self.TeamName
 
-class ManagerDetails(models.Model):
-    Name  = models.CharField(max_length=25)
-    Dept  = models.CharField(max_length=25)
-    Batch = models.CharField(max_length=25)
-
-    team = models.ForeignKey(TeamDetails, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.Name  
-
 class BidTransactions(models.Model):
     playername = models.OneToOneField(PlayerDetails, on_delete=models.CASCADE)
     price = models.IntegerField()
     Team = models.ForeignKey(TeamDetails, on_delete=models.CASCADE, null=True,)
 
     T_ID = models.CharField(max_length=10, unique=True, primary_key=True, editable=False)
-    T_status = models.IntegerField(default=0, choices=[(0, "Pending"), (1, "UnSold"), (2, "Sold")])
+    T_status = models.IntegerField(default=0, choices=[(0, "Pending"), (1, "UnSold"), (2, "Sold"), (3, "Retained"), (4, "Marquee")])
     def save(self, *args, **kwargs):
         if not self.T_ID:
             last_tran = BidTransactions.objects.order_by('-T_ID').first()

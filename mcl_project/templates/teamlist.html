@@ -5,7 +5,7 @@
 <title>MCL-Teamlist</title>
 
 <style>
-  /* ===== BASE BOX ===== */
+  /* ===== CORE BOX ===== */
   .custom-box {
     background-color: var(--secondary-bg);
     border: 2px solid var(--border-color);
@@ -17,8 +17,6 @@
   .header-title {
     color: var(--accent-color);
     font-weight: bold;
-    border-left: 4px solid var(--accent-color);
-    padding-left: 8px;
   }
 
   /* ===== TEAM LOGO ===== */
@@ -40,12 +38,8 @@
   .table-custom th,
   .table-custom td {
     padding: 12px;
+    text-align: center;
     vertical-align: middle;
-  }
-
-  .table-custom thead th {
-    border-bottom: 2px solid var(--border-color);
-    font-weight: 600;
   }
 
   .table-responsive {
@@ -54,18 +48,12 @@
     overflow: hidden;
   }
 
-  /* ===== HEADER ROW ===== */
+  /* ===== HEADER ===== */
   .team-header {
     background-color: var(--secondary-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 15px;
-  }
-
-  .team-name {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: var(--accent-color);
   }
 
   /* ===== POINTS + LOGO ===== */
@@ -74,12 +62,6 @@
     align-items: center;
     justify-content: space-between;
     gap: 15px;
-  }
-
-  /* ===== DIVIDER ===== */
-  .divider {
-    border-left: 2px solid var(--border-color);
-    height: 100%;
   }
 
   /* ===== BUTTON ===== */
@@ -112,10 +94,6 @@
       width: 60px;
       height: 60px;
     }
-
-    .divider {
-      display: none;
-    }
   }
 </style>
 {% endblock titleLink %}
@@ -125,47 +103,51 @@
 
   <!-- HEADER -->
   <div class="row team-header align-items-center mb-4">
-    <div class="col-md-4 text-center text-md-start">
-      <div class="team-name">{{ team.TeamName }}</div>
-    </div>
-
     <div class="col-md-8">
       <div class="points-logo-wrapper">
         <div class="custom-box">
-          <b>Current Balance :</b><br>
-          &#129689; <span class="text-warning">{{ price_re }}</span>
+          <b>Team Name</b><br>
+          <span class="text-warning">{{ team.TeamName }}</span>
         </div>
         <img src="{{ team.TeamLogo.url }}" class="team-logo-circle" alt="Team Logo">
       </div>
     </div>
   </div>
 
-  <!-- SUMMARY -->
+  <!-- SUMMARY TABLE -->
   <div class="mb-4">
-    <table class="table table-custom text-center">
-      <thead>
-        <tr>
-          <th>Total Players</th>
-          <th>Total Managers</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ players|length }}</td>
-          <td>{{ managers|length }}</td>
-        </tr>
-      </tbody>
+    <table class="table table-custom">
+      {% for team_row, price_row in team_chunks %}
+        <thead>
+          <tr>
+            {% for team in team_row %}
+              <th>{{ team.TeamName }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% for price in price_row %}
+              {% if price < price_re %}
+                <td class="text-success">{{ price }}</td>
+              {% elif price > price_re %}
+                <td class="text-danger">{{ price }}</td>
+              {% else %}
+                <td class="text-warning">{{ price }}</td>
+              {% endif %}
+            {% endfor %}
+          </tr>
+        </tbody>
+      {% endfor %}
     </table>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- PLAYER LIST -->
   <div class="row">
-
-    <!-- PLAYERS -->
     <div class="col-lg-6 mb-4">
       <h5 class="header-title mb-3">Player List</h5>
       <div class="table-responsive">
-        <table class="table table-custom text-center">
+        <table class="table table-custom">
           <thead>
             <tr>
               <th>ID</th>
@@ -187,37 +169,6 @@
         </table>
       </div>
     </div>
-
-    <!-- DIVIDER -->
-    <div class="col-lg-1 d-none d-lg-flex justify-content-center">
-      <div class="divider"></div>
-    </div>
-
-    <!-- MANAGERS -->
-    <div class="col-lg-5 mb-4">
-      <h5 class="header-title mb-3">Manager List</h5>
-      <div class="table-responsive">
-        <table class="table table-custom text-center">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Dept</th>
-              <th>Batch</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for manager in managers %}
-            <tr>
-              <td>{{ manager.Name }}</td>
-              <td>{{ manager.Dept }}</td>
-              <td>{{ manager.Batch }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
   </div>
 
   <!-- LOGOUT -->
