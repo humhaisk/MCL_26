@@ -4,142 +4,135 @@
 <title>MCL-Teamlist</title>
 
 <style>
-  /* ===== CORE BOX ===== */
-  .custom-box {
-    background-color: var(--secondary-bg);
-    border: 2px solid var(--border-color);
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-  }
 
-  .header-title {
-    color: var(--accent-color);
-    font-weight: bold;
-  }
+.custom-box {
+  background-color: var(--secondary-bg);
+  border: 2px solid var(--border-color);
+  padding: 14px 18px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 600;
+}
 
-  /* ===== TEAM LOGO ===== */
-  .team-logo-circle {
-    width: 70px;
-    height: 70px;
-    border: 2px solid var(--border-color);
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: var(--primary-bg);
-  }
+.header-title {
+  color: var(--accent-color);
+  font-weight: 700;
+}
 
-  /* ===== TABLE ===== */
-  .table-custom {
-    --bs-table-bg: var(--secondary-bg);
-    --bs-table-color: var(--text-color);
-  }
+.team-header {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 25px;
+}
 
-  .table-custom th,
-  .table-custom td {
-    padding: 12px;
-    text-align: center;
-    vertical-align: middle;
-  }
+.team-grid {
+  display: grid;
+  grid-template-columns: auto auto auto 80px;
+  gap: 16px;
+  align-items: center;
+}
 
-  .table-responsive {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    overflow: hidden;
-  }
+.logo-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  /* ===== HEADER ===== */
-  .team-header {
-    background-color: var(--secondary-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
-  }
+.team-logo-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  object-fit: cover;
+  background-color: var(--primary-bg);
+}
 
-  /* ===== POINTS + LOGO ===== */
-  .points-logo-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-  }
+.table-custom {
+  --bs-table-bg: var(--secondary-bg);
+  --bs-table-color: var(--text-color);
+  width: 100%;
+}
 
-  /* ===== BUTTON ===== */
-  .btn-control {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 8px;
-  }
+.table-custom th,
+.table-custom td {
+  padding: 12px;
+  text-align: center;
+  vertical-align: middle;
+}
 
-  .btn-logout-admin {
-    background-color: var(--primary-bg);
-    color: var(--danger-text);
-    border: 2px solid var(--danger-text);
-  }
+.table-custom thead th {
+  font-weight: 700;
+  border-bottom: 2px solid var(--border-color);
+}
 
-  .btn-logout-admin:hover {
-    background-color: var(--danger-text);
-    color: var(--primary-bg);
-  }
+.table-responsive {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+}
 
-  /* ===== DESKTOP LAYOUT ===== */
+.btn-control {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+.btn-logout-admin {
+  background-color: var(--primary-bg);
+  color: var(--danger-text);
+  border: 2px solid var(--danger-text);
+}
+
+.btn-logout-admin:hover {
+  background-color: var(--danger-text);
+  color: var(--primary-bg);
+}
+
+@media (max-width: 768px) {
+
   .team-grid {
-    display: grid;
-    grid-template-columns: auto auto auto 80px;
-    gap: 15px;
-    align-items: center;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "team logo"
+      "price price"
+      "total total";
+    gap: 14px;
   }
 
-  /* ===== LOGO ===== */
+  .team-name {
+    grid-area: team;
+    text-align: left;
+  }
+
+  .price {
+    grid-area: price;
+  }
+
+  .total-player {
+    grid-area: total;
+  }
+
   .logo-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    grid-area: logo;
+    justify-content: flex-end;
   }
 
-  /* ===== MOBILE VIEW ===== */
-  @media (max-width: 768px) {
+  .team-logo-circle {
+    width: 55px;
+    height: 55px;
   }
+}
 
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 768px) {
-    .points-logo-wrapper {
-      flex-direction: column;
-    }
-    .team-grid {
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        "team logo"
-        "price price"
-        "total total";
-    }
-
-    .team-name {
-      grid-area: team;
-    }
-    .price {
-      grid-area: price;
-    }
-    .total-player {
-      grid-area: total;
-    }
-    .logo-box {
-      grid-area: logo;
-      justify-content: flex-end;
-    }
-
-    .team-logo-circle {
-      width: 60px;
-      height: 60px;
-    }
-  }
 </style>
 {% endblock titleLink %} 
 {% block main %}
 <main class="container-fluid px-3 px-md-4 py-3">
   <!-- HEADER -->
-  <div class="team-header">
+  <div class="team-header mb-4">
     <div class="team-grid">
       <div class="custom-box team-name">
         <b>Team Name:</b> {{ team.TeamName }}
@@ -200,13 +193,15 @@
       </thead>
       <tbody>
         <tr>
-          {% for price in price_row %} {% if price < price_re %}
+          {% for price in price_row %} 
+          {% if price < price_re %}
           <td class="text-success">{{ price }}</td>
           {% elif price > price_re %}
           <td class="text-danger">{{ price }}</td>
           {% else %}
           <td class="text-warning">{{ price }}</td>
-          {% endif %} {% endfor %}
+          {% endif %} 
+          {% endfor %}
         </tr>
       </tbody>
       {% endfor %}
