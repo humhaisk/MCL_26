@@ -106,16 +106,51 @@
     <div class="col-md-8">
       <div class="points-logo-wrapper">
         <div class="custom-box">
-          <b>Team Name</b><br>
-          <span class="text-warning">{{ team.TeamName }}</span>
+          <b>Team Name</b> {{ team.TeamName }}
+        </div>
+        <div class="custom-box">
+          <b>Remaining Price</b>
+          <span class="text-warning">{{ price_re }}</span>
+        </div>
+        <div class="custom-box">
+          <b>Total Player</b>
+          <span class="text-success">{{ players.count }}</span>
         </div>
         <img src="{{ team.TeamLogo.url }}" class="team-logo-circle" alt="Team Logo">
       </div>
     </div>
   </div>
 
+  <!-- PLAYER LIST -->
+  <div class="row">
+      <h5 class="header-title mb-3">Player Details</h5>
+      <div class="table-responsive">
+        <table class="table table-custom">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for player in players %}
+            <tr>
+              <td>{{ player.playername.P_ID }}</td>
+              <td>{{ player.playername.Name }}</td>
+              <td>{{ player.playername.PlayerRole }}</td>
+              <td>{{ player.price }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+  </div>
+  
   <!-- SUMMARY TABLE -->
   <div class="mb-4">
+    <h5 class="header-title mb-3">Teams Current Price</h5>
     <table class="table table-custom">
       {% for team_row, price_row in team_chunks %}
         <thead>
@@ -142,34 +177,6 @@
     </table>
   </div>
 
-  <!-- PLAYER LIST -->
-  <div class="row">
-    <div class="col-lg-6 mb-4">
-      <h5 class="header-title mb-3">Player List</h5>
-      <div class="table-responsive">
-        <table class="table table-custom">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Role</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for player in players %}
-            <tr>
-              <td>{{ player.playername.P_ID }}</td>
-              <td>{{ player.playername.Name }}</td>
-              <td>{{ player.playername.PlayerRole }}</td>
-              <td>{{ player.price }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 
   <!-- LOGOUT -->
   <div class="text-center mt-4">
