@@ -1,6 +1,5 @@
-{% extends "base.html" %}
-{% load static %}
-
+{% extends "base.html" %} 
+{% load static %} 
 {% block titleLink %}
 <title>MCL-Teamlist</title>
 
@@ -84,10 +83,50 @@
     color: var(--primary-bg);
   }
 
+  /* ===== DESKTOP LAYOUT ===== */
+  .team-grid {
+    display: grid;
+    grid-template-columns: auto auto auto 80px;
+    gap: 15px;
+    align-items: center;
+  }
+
+  /* ===== LOGO ===== */
+  .logo-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* ===== MOBILE VIEW ===== */
+  @media (max-width: 768px) {
+  }
+
   /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
     .points-logo-wrapper {
       flex-direction: column;
+    }
+    .team-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "team logo"
+        "price price"
+        "total total";
+    }
+
+    .team-name {
+      grid-area: team;
+    }
+    .price {
+      grid-area: price;
+    }
+    .total-player {
+      grid-area: total;
+    }
+    .logo-box {
+      grid-area: logo;
+      justify-content: flex-end;
     }
 
     .team-logo-circle {
@@ -96,95 +135,101 @@
     }
   }
 </style>
-{% endblock titleLink %}
-
+{% endblock titleLink %} 
 {% block main %}
 <main class="container-fluid px-3 px-md-4 py-3">
-
   <!-- HEADER -->
-  <div class="row team-header justify-content-between mb-4">
-    <div class="justify-content-between d-flex">
-      <div class="custom-box d-inline">
+  <div class="team-header">
+    <div class="team-grid">
+      <div class="custom-box team-name">
         <b>Team Name:</b> {{ team.TeamName }}
       </div>
-      <div class="custom-box d-inline">
+
+      <div class="custom-box price"><b>Remaining Price:</b> {{ price_re }}</div>
+
+      <div class="custom-box total-player">
         <b>Total Player:</b> {{ players.count }}
       </div>
-    </div>
-    <div class="justify-content-between d-flex">
-      <div class="custom-box d-inline">
-        <b>Remaining Price:</b> {{ price_re }}
+
+      <div class="logo-box">
+        <img
+          src="{{ team.TeamLogo.url }}"
+          class="team-logo-circle"
+          alt="Team Logo"
+        />
       </div>
-      <img src="{{ team.TeamLogo.url }}" class="team-logo-circle" alt="Team Logo">
     </div>
   </div>
 
   <!-- PLAYER LIST -->
   <div class="row mb-4">
-      <h5 class="header-title mb-3">Player Details</h5>
-        <table class="table table-custom">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Role</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for player in players %}
-            <tr>
-              <td>{{ player.playername.P_ID }}</td>
-              <td>{{ player.playername.Name }}</td>
-              <td>{{ player.playername.PlayerRole }}</td>
-              <td>{{ player.price }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+    <h5 class="header-title mb-3">Player Details</h5>
+    <table class="table table-custom">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player in players %}
+        <tr>
+          <td>{{ player.playername.P_ID }}</td>
+          <td>{{ player.playername.Name }}</td>
+          <td>{{ player.playername.PlayerRole }}</td>
+          <td>{{ player.price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-  
+
   <!-- SUMMARY TABLE -->
   <div class="row mb-4">
     <h5 class="header-title mb-3">Teams Current Price</h5>
     <table class="table table-custom">
       {% for team_row, price_row in team_chunks %}
-        <thead>
-          <tr>
-            {% for team in team_row %}
-              <th>{{ team.TeamName }}</th>
-            {% endfor %}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {% for price in price_row %}
-              {% if price < price_re %}
-                <td class="text-success">{{ price }}</td>
-              {% elif price > price_re %}
-                <td class="text-danger">{{ price }}</td>
-              {% else %}
-                <td class="text-warning">{{ price }}</td>
-              {% endif %}
-            {% endfor %}
-          </tr>
-        </tbody>
+      <thead>
+        <tr>
+          {% for team in team_row %}
+          <th>{{ team.TeamName }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for price in price_row %} {% if price < price_re %}
+          <td class="text-success">{{ price }}</td>
+          {% elif price > price_re %}
+          <td class="text-danger">{{ price }}</td>
+          {% else %}
+          <td class="text-warning">{{ price }}</td>
+          {% endif %} {% endfor %}
+        </tr>
+      </tbody>
       {% endfor %}
     </table>
   </div>
 
-
   <!-- LOGOUT -->
   <div class="text-center mt-4">
-    <button class="btn btn-control btn-logout-admin"
-      onclick="document.getElementById('logout-form').submit()">
+    <button
+      class="btn btn-control btn-logout-admin"
+      onclick="document.getElementById('logout-form').submit()"
+    >
       Log Out
     </button>
   </div>
 
-  <form id="logout-form" method="post" action="{% url 'logout' %}" style="display:none;">
+  <form
+    id="logout-form"
+    method="post"
+    action="{% url 'logout' %}"
+    style="display: none"
+  >
     {% csrf_token %}
   </form>
-
 </main>
 {% endblock main %}
